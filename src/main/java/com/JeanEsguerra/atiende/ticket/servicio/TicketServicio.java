@@ -47,15 +47,13 @@ public class TicketServicio {
 
     @Transactional(readOnly = true)
     public TicketRespuesta buscarPorId(Long id) {
-        Ticket ticket = ticketRepositorio.findById(id)
-                .orElseThrow(() -> new TicketNoEncontradoException(id));
+        Ticket ticket = obtenerTicket(id);
         return ticketMapeador.aDto(ticket);
     }
 
     @Transactional
     public TicketRespuesta cambiarEstado(Long id, ActualizarEstadoTicketRequest request) {
-        Ticket ticket = ticketRepositorio.findById(id)
-                .orElseThrow(() -> new TicketNoEncontradoException(id));
+        Ticket ticket = obtenerTicket(id);
 
         if (!ticket.getEstado().puedeCambiarA(request.estado())) {
             throw new TransicionEstadoNoPermitidaException(ticket.getEstado(), request.estado());
@@ -64,5 +62,10 @@ public class TicketServicio {
         ticket.setEstado(request.estado());
         Ticket ticketActualizado = ticketRepositorio.saveAndFlush(ticket);
         return ticketMapeador.aDto(ticketActualizado);
+    }
+
+    private Ticket obtenerTicket(Long id) {
+        return ticketRepositorio.findById(id)
+                .orElseThrow(() -> new TicketNoEncontradoException(id));
     }
 }

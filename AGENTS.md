@@ -9,7 +9,7 @@ Antes de cambiar reglas de negocio, lee `SPEC.md`: es la fuente de verdad.
 - Configuración solo en `application.properties`. Nunca `application.yml` ni perfiles.
 
 ## Arquitectura
-- Paquete base `com.jeanEsguerra.atiende`, organizado por dominio: `ticket/`, `compartido/`.
+- Paquete base `com.devsenior.atiende`, organizado por dominio: `ticket/`, `compartido/`.
 - Capas: Controller → Service → Repository. El Controller no tiene lógica de negocio.
 - DTOs como `record` en `<dominio>/dto`. Nunca expongas entidades JPA en la API.
 - Un mapper propio por dominio (`@Component`), sin librerías de mapeo.
@@ -24,6 +24,8 @@ Antes de cambiar reglas de negocio, lee `SPEC.md`: es la fuente de verdad.
 
 ## Tests
 - JUnit 5 + Mockito. Los tests del Service no levantan Spring.
+- Nunca modifiques un test para que pase. Si un test falla, explícame si la causa está en el test o en el código y espera mi decisión.
+- Un test rojo contra la SPEC es una pregunta de negocio: no la resuelvas tú.
 
 ## Límites
 - No agregues dependencias al `pom.xml` sin preguntarme.
